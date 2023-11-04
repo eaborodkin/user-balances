@@ -1,7 +1,10 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Validation\ValidationException;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +17,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
+Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);
+
+Route::middleware(['auth:sanctum'])->group(function ($router) {
+    Route::get('/check-token', fn() => response()->json(true));
+
+    Route::get('/user/balance', \App\Http\Controllers\API\User\BalanceController::class);
+    Route::get('/user/balance/history', \App\Http\Controllers\API\User\HistoryController::class);
 });
