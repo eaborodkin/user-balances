@@ -93,6 +93,9 @@ export const useUserAuth = defineStore('userAuth', () => {
     const processServerResponse = (res) => {
         const status = (res?.status !== undefined) ? res.status : res
         switch (status) {
+            case 500:
+                alert("Ошибка сервера!")
+                break
             case 204:
                 setXXsrfToken(res.config.headers['X-XSRF-TOKEN'])
                 break

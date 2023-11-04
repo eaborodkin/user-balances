@@ -1,66 +1,46 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Функционал
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+### Структура сайта
+Разработаны следующие страницы:
+- Логин
+- Главная страница 
+  - отображает текущий баланс пользователя и 5 последних операций
+  обновление всех данных через указанный в параметре компонента интервал времени в микросекундах 
+- История операций 
+  - отображает таблицу операций с сортировкой по полю “дата” и поиском по полю “описание”.
 
-## About Laravel
+### Бэкенд
+Через консольную команду (artisan) реализованы следующие инструменты:
+- добавление пользователей 
+- проведение операций по балансу пользователя, по E-mail (начисление/списание) с указанием описания операции, ограничение операций по "уходу в минус".
+- проведения операций по балансу реализовано с использованием Laravel Queues(database).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Установка и настройка
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Клонируйте данный репозиторий 
+    git clone https://github.com/eaborodkin/user-balances.git
+### Настройте файл .env
+    Сохраните файл .env.example под именем .env
+    Отредактируйте значение поля DB_PASSWORD на желаемое
+### Установите зависимости PHP с помощью Composer
+- Если не установлен, установите [Composer](https://getcomposer.org/)
+- Установите все необходимые зависимости командой "composer install"
+### Установка зависимостей JS с помощью NPM
+- Если не установлен, установите [Node.js](https://nodejs.org)
+- Если не установлен, установите [NPM](https://www.npmjs.com/)
+- Выполните команду "npm i"
+### Запуск приложения в Docker Compose
+- Если не установлен, установите [Docker](https://www.docker.com/)
+- Выполните запуск приложения командой "sudo docker compose up -d"
+- Войдите в консоль контейнера laravel с помощью команды "sudo docker exec -ti laravel bash"
+- Выполните следующую команду в контейнере laravel "chmod o+rwx,g+rwx,a+rwx -R storage bootstrap/cache"
+- Необходимо сгенерировать ключ приложения с помощью команды "php artisan key:generate"
+- Выполните миграции БД с помощью команды в контейнере "php artisan migrate"
+- Выполните сборку SPA приложения с помощью команды в контейнере "npm run build"
+### Создание нового пользователя
+    В консоли выполните команду "php artisan user:create" и следуйте инструкции в консоли.
+### Внесение начисления/списания по балансу пользователя
+    Для начисления средств на баланс пользователя воспользуйтесь командой по следующему шаблону "php artisan user:balance-operation <E-mail> <Сумма> <Описание>"
+    Для списания средств с баланса пользователя воспользуйтесь командой по следующему шаблону "php artisan user:balance-operation <E-mail> <Сумма> --spending <Описание>"
+### Выполнение операций в очереди
+    В консоли выполните команду "php artisan queue:work" для выполнения задач по операциям по балансу. 
