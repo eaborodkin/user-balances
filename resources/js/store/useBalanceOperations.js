@@ -28,7 +28,7 @@ export const useBalanceOperations = defineStore('balanceOperations', () => {
         return rawOperations.value.filter((value, index) => (limit.value !== null) ? (index < limit.value) : true)
     })
 
-    const updateOperations = async (url = '/api/user/balance/history?page=1') => {
+    const updateOperations = async (url = '/api/user/balance/history') => {
         const {data, status} = await axios.get(url, {
             params: requestParams.value,
         })

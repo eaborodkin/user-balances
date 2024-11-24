@@ -1,12 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
+use App\DataTransferObjects\BalanceOperationDto;
 use App\Jobs\BalanceOperationJob;
-use App\Services\BalanceOperationService;
-use App\ValueObjects\BalanceOperation;
 use Illuminate\Console\Command;
-use Exception;
+use MichaelRubel\ValueObjects\Collection\Complex\Email;
+use App\ValueObjects\NumberWithNegativeValues as Number;
+use Throwable;
 
 class BalanceOperationCommand extends Command
 {
@@ -16,10 +19,10 @@ class BalanceOperationCommand extends Command
      * @var string
      */
     protected $signature = 'user:balance-operation
-        {email : E-mail пользователя}
-        {value : Значение на которое изменится баланс пользователя}
-        {--spending : Указывается, если расходование}
-        {description : Комментарий}
+        {email : User\'s email}
+        {amount : The value to which the user\'s balance will change}
+        {--spending : Specify if spending operation}
+        {description : Operation description}
     ';
 
     /**
@@ -27,7 +30,7 @@ class BalanceOperationCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Начисление/списание по E-mail пользователя с указанием описания операции';
+    protected $description = 'Charging/debiting of funds via user\'s email with the description of the transaction';
 
     /**
      * Execute the console command.
@@ -35,31 +38,36 @@ class BalanceOperationCommand extends Command
     public function handle(): int
     {
         try {
-            $service = new BalanceOperationService(
-                new BalanceOperation(
-                    emailRawValue: $this->argument('email'),
-                    valueRawValue: (int)$this->argument('value'),
-                    spendingRawValue: $this->option('spending'),
-                    descriptionRawValue: $this->argument('description'),
-                )
+            $dto = BalanceOperationDto::makeFromCommandParams(
+                email: Email::from($this->argument('email')),
+                amount: Number::from($this->argument('amount')),
+                spending: (bool) $this->option('spending'),
+                description: (string) $this->argument('description')
             );
-            $service->checkExceptions();
-
-            BalanceOperationJob::dispatch($service);
-        } catch (Exception $exception) {
+            BalanceOperationJob::dispatchSync($dto);
+        } catch (Throwable $exception) {
             $this->error($exception->getMessage());
             return self::FAILURE;
         }
 
-
-        $message = "Операция ";
-        $message .= ($service->operation->spendingRawValue) ? 'списания с' : 'пополнения';
-        $message .= " баланса пользователя с E-mail {$service->operation->emailRawValue} на сумму ";
-        $message .= $service->operation->valueRawValue;
-        $message .= " будет выполнена в очереди.";
-
-        $this->info($message);
+        $this->info($this->getSuccessMessage($dto));
 
         return self::SUCCESS;
+    }
+
+    private function getSuccessMessage(BalanceOperationDto $dto): string
+    {
+        $message = "The transaction of ";
+        $message .= $this->isDebitingOfFunds($dto) ? 'debiting of funds' : 'charging of funds';
+        $message .= " from the balance of the user with Email {$dto->user->email} in the amount of ";
+        $message .= $dto->amount->abs();
+        $message .= " will be performed in a queue.";
+
+        return $message;
+    }
+
+    private function isDebitingOfFunds(BalanceOperationDto $dto): bool
+    {
+        return bccomp($dto->amount->toString(), '0') < 0;
     }
 }

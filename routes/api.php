@@ -1,10 +1,11 @@
 <?php
 
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+declare(strict_types=1);
+
+use App\Http\Controllers\API\User\BalanceController;
+use App\Http\Controllers\API\User\HistoryController;
+use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Validation\ValidationException;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,12 +18,11 @@ use Illuminate\Validation\ValidationException;
 |
 */
 
-Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
-Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout']);
+Route::post('/login', [LoginController::class, 'login']);
 
-Route::middleware(['auth:sanctum'])->group(function ($router) {
-    Route::get('/check-token', fn() => response()->json(true));
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/logout', [LoginController::class, 'logout']);
 
-    Route::get('/user/balance', \App\Http\Controllers\API\User\BalanceController::class);
-    Route::get('/user/balance/history', \App\Http\Controllers\API\User\HistoryController::class);
+    Route::get('/user/balance', BalanceController::class);
+    Route::get('/user/balance/history', HistoryController::class);
 });

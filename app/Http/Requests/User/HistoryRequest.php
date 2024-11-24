@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\User;
 
 use App\Enums\OrderEnum;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 
@@ -16,17 +19,23 @@ class HistoryRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation()
+    {
+        return $this->merge([
+            'search' => trim(strtolower($this->string('search')->toString())),
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
             'order'=>[new Enum(OrderEnum::class)],
-            'search'=>'string|nullable',
-            'page'=>'integer',
+            'search'=>'string',
         ];
     }
 }
