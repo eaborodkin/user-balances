@@ -35,7 +35,7 @@
 - Войдите в консоль контейнера laravel с помощью команды "sudo docker exec -ti laravel bash"
 - Выполните следующую команду в контейнере laravel "chmod o+rwx,g+rwx,a+rwx -R storage bootstrap/cache"
 - Необходимо сгенерировать ключ приложения с помощью команды "php artisan key:generate"
-- Выполните миграции БД с помощью команды в контейнере "php artisan migrate"
+- Выполните миграции БД с помощью команды в контейнере "php artisan migrate --seed"
 - Выполните сборку SPA приложения с помощью команды в контейнере "npm run build"
 ### Создание нового пользователя
     В консоли выполните команду "php artisan user:create" и следуйте инструкции в консоли.

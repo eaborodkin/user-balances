@@ -16,7 +16,7 @@ class OperationResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "value" => $this->value,
+            "value" => $this->amount->value(),
             "description" => $this->description,
             "date" => $this->updated_at->format('d.m.Y H:i:s'),
         ];

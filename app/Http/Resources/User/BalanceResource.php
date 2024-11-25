@@ -15,7 +15,7 @@ class BalanceResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'balance' => $this->balance->value ?? 0,
+            'balance' => $this->balance->amount->value() ?? 0,
         ];
     }
 }

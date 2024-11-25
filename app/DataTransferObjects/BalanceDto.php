@@ -18,7 +18,7 @@ class BalanceDto extends BaseDto
     {
         return [
             'balance_id' => $this->balance->id,
-            'balance_amount' => $this->balance->value->value(),
+            'balance_amount' => $this->balance->amount->value(),
         ];
     }
 

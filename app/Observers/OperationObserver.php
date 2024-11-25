@@ -16,11 +16,11 @@ class OperationObserver
 
     public function creating(Operation $operation): void
     {
-        $this->balanceService->changeBalance($operation->balance, $operation->value);
+        $this->balanceService->changeBalance($operation->balance, $operation->amount);
     }
 
     public function created(Operation $operation): void
     {
-        Log::info(sprintf('Operation was added: %s', $operation->value->value()));
+        Log::info(sprintf('Operation was added: %s', $operation->amount->value()));
     }
 }

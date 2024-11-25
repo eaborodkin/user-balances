@@ -51,7 +51,9 @@ class User extends Authenticatable
         parent::boot();
 
         static::created(function ($user) {
-            $user->balance()->create();
+            if (!app()->runningInConsole()) {
+                $user->balance()->create();
+            }
         });
     }
 

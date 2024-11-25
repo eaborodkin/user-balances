@@ -14,7 +14,7 @@ class Balance extends Model
     use HasFactory;
 
     protected $casts = [
-        'value' => NumberCast::class,
+        'amount' => NumberCast::class,
     ];
 
     public function operations(): HasMany

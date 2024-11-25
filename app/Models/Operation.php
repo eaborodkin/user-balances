@@ -23,12 +23,12 @@ class Operation extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'value',
+        'amount',
         'description',
     ];
 
     protected $casts = [
-        'value' => NumberCast::class,
+        'amount' => NumberCast::class,
     ];
 
     public function balance(): BelongsTo

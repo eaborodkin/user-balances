@@ -55,7 +55,7 @@ class BalanceOperationDto extends BaseDto
     public function toArray(): array
     {
         return [
-            'value' => $this->amount,
+            'value' => $this->amount->value(),
             'description' => $this->description,
         ];
     }
@@ -68,7 +68,7 @@ class BalanceOperationDto extends BaseDto
     protected function newValueLessThanZero(): bool
     {
         /** @var Number $balanceValue */
-        $balanceValue = $this->user->balance->value;
+        $balanceValue = $this->user->balance->amount;
 
         return $balanceValue->add($this->amount->value()) < 0;
     }
