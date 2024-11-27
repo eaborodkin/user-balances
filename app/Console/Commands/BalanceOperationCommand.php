@@ -8,7 +8,7 @@ use App\DataTransferObjects\BalanceOperationDto;
 use App\Jobs\BalanceOperationJob;
 use Illuminate\Console\Command;
 use MichaelRubel\ValueObjects\Collection\Complex\Email;
-use App\ValueObjects\NumberWithNegativeValues as Number;
+use MichaelRubel\ValueObjects\Collection\Primitive\Number;
 use Throwable;
 
 class BalanceOperationCommand extends Command

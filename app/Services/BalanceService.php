@@ -6,7 +6,7 @@ namespace App\Services;
 
 use App\Models\Balance;
 use Illuminate\Support\Facades\Log;
-use App\ValueObjects\NumberWithNegativeValues as Number;
+use MichaelRubel\ValueObjects\Collection\Primitive\Number;
 
 class BalanceService
 {

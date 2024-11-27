@@ -8,7 +8,7 @@ use App\Exceptions\Exception;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use MichaelRubel\ValueObjects\Collection\Complex\Email;
-use App\ValueObjects\NumberWithNegativeValues as Number;
+use MichaelRubel\ValueObjects\Collection\Primitive\Number;
 use Throwable;
 
 class BalanceOperationDto extends BaseDto

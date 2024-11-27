@@ -7,7 +7,7 @@ namespace App\Models\Casts;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
-use App\ValueObjects\NumberWithNegativeValues as Number;
+use MichaelRubel\ValueObjects\Collection\Primitive\Number;
 
 class NumberCast implements CastsAttributes
 {
